@@ -37,6 +37,10 @@ class CorpusMongoDB:
         self._source_map: dict[int, str] = {}
         self._n_docs = 0
         self._total_chunks = 0
+        # Sideband flag read by writing nodes (phase_runners, verification) via
+        # getattr(corpus, "tavily_enabled", True) to decide whether Tavily
+        # fallback search is allowed for this corpus instance.
+        self.tavily_enabled: bool = True
         project_root = os.path.abspath(
             os.path.join(os.path.dirname(__file__), "..", "..", "..", "..")
         )
@@ -163,7 +167,7 @@ class CorpusMongoDB:
         cleaned_texts = [t.replace("\n", " ").strip()[:8000] for t in texts]
 
         batches = []
-        current_batch = []
+        current_batch: list[str] = []
         current_tokens = 0
 
         for text in cleaned_texts:
@@ -473,7 +477,7 @@ class CorpusMongoDB:
         """
         collection = self._get_collection()
 
-        idx = chunk.chunk_idx  # Make sure Chunk has this field.
+        idx = int(chunk.chunk_idx)  # numeric position within the document
         idx_min = idx - window
         idx_max = idx + window
 
@@ -606,18 +610,21 @@ class CorpusMongoDB:
         found = best_score >= ANCHOR_MIN_SIM
         return found, best_score, best_text
 
-    def render_prompt(self, query: str, max_chars: int = MAX_CORPUS_PROMPT) -> tuple:
+    def render_prompt(
+        self, query: str, max_chars: int = MAX_CORPUS_PROMPT, top_k: int = TOP_K_WRITER
+    ) -> tuple:
         """Renders a prompt by retrieving relevant chunks from the corpus based on a query.
         Retrieves chunks using vector search and concatenates them until the max character limit is reached.
 
         Args:
             query (str): The input query to search for relevant chunks.
             max_chars (int, optional): The maximum number of characters for the rendered prompt. Defaults to MAX_CORPUS_PROMPT.
+            top_k (int, optional): The maximum number of chunks to retrieve. Defaults to TOP_K_WRITER.
 
         Returns:
             A tuple containing the rendered prompt text, a list of URLs used in the prompt, and a mapping of source indices to URLs.
         """
-        chunks = self.query(query, top_k=TOP_K_WRITER)
+        chunks = self.query(query, top_k=top_k)
 
         if not chunks:
             return "", self._used_urls, self._source_map

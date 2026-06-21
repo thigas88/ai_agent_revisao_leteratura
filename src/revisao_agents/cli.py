@@ -114,8 +114,11 @@ def run_planning(
     try:
         from contextlib import nullcontext
 
-        from observability import workflow_run as _workflow_run
-        from observability.mlflow_config import EXP_PLANNING_ACADEMIC, EXP_PLANNING_TECHNICAL
+        from revisao_agents.observability import workflow_run as _workflow_run
+        from revisao_agents.observability.mlflow_config import (
+            EXP_PLANNING_ACADEMIC,
+            EXP_PLANNING_TECHNICAL,
+        )
 
         _exp = EXP_PLANNING_ACADEMIC if review_type_norm == "academic" else EXP_PLANNING_TECHNICAL
         _mlflow_ctx = _workflow_run(_exp, _run_name, params=_params)
@@ -238,7 +241,9 @@ def show_menu():
         print("  [b] Academic — narrative literature review (corpus-first)")
         select_mode = input("\nChoose [a/b, default=a]: ").strip().lower() or "a"
 
-        lang_opt = input("\nReview Language [pt/en, default=pt]: ").strip().lower() or "pt"
+        lang_opt = WriterConfig.normalize_language(
+            input("\nReview Language [pt/en, default=pt]: ").strip().lower() or "pt"
+        )
         if select_mode == "b":
             writer_config = WriterConfig.academic(language=lang_opt)
             glob_pattern = os.path.join(PLANS_DIR, "plano_revisao_*.md")
@@ -346,7 +351,7 @@ def main(
     ensure_runtime_dirs()
 
     try:
-        from observability import initialize_experiments
+        from revisao_agents.observability import initialize_experiments
 
         initialize_experiments()
     except ImportError:

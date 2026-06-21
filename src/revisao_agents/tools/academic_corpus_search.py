@@ -30,20 +30,11 @@ def search_academic_corpus(
     """
     try:
         corpus = CorpusMongoDB()
-        # Use render_prompt but honour the caller's limit by restricting top_k
-        # before the call so only `limit` chunks are retrieved.
-        corpus._top_k_override = limit  # stored temporarily
-        _original_query = corpus.query
-
-        def _limited_query(texto_query: str, top_k: int = limit) -> list:
-            return _original_query(texto_query, top_k=limit)
-
-        corpus.query = _limited_query
         context, used_urls, _ = corpus.render_prompt(
             query=query,
             max_chars=8000,  # safe limit for LLM context
+            top_k=limit,
         )
-        corpus.query = _original_query  # restore
 
         if not context.strip():
             return f"No relevant sources found for: '{query}'"

@@ -21,6 +21,7 @@ Required API keys in the .env file:
 
 import os
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from enum import Enum
 from typing import Any, TypeVar
 
@@ -31,6 +32,7 @@ from langchain.agents import create_agent
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
+from pydantic import SecretStr
 
 from ...config import validate_provider
 
@@ -127,7 +129,7 @@ class GoogleProvider(BaseLLMProvider):
         return ChatGoogleGenerativeAI(
             model=self.model_name,
             temperature=self.temperature,
-            google_api_key=self.get_api_key(),
+            google_api_key=SecretStr(self.get_api_key()),
         )
 
 
@@ -154,7 +156,7 @@ class GroqProvider(BaseLLMProvider):
         return ChatGroq(
             model=self.model_name,
             temperature=self.temperature,
-            groq_api_key=self.get_api_key(),
+            api_key=SecretStr(self.get_api_key()),
         )
 
 
@@ -197,7 +199,7 @@ class OpenAIProvider(BaseLLMProvider):
         return ChatOpenAI(
             model=self.model_name,
             temperature=self.temperature,
-            openai_api_key=self.get_api_key(),
+            api_key=SecretStr(self.get_api_key()),
         )
 
 
@@ -235,7 +237,7 @@ class OpenRouterProvider(BaseLLMProvider):
         return ChatOpenAI(
             model=self.model_name,
             temperature=self.temperature,
-            openai_api_key=self.get_api_key(),
+            api_key=SecretStr(self.get_api_key()),
             base_url="https://openrouter.ai/api/v1",
             default_headers={
                 "HTTP-Referer": "https://github.com/duartejr/paper_reviwer",
@@ -252,7 +254,7 @@ class OpenRouterProvider(BaseLLMProvider):
 class LLMFactory:
     """Creates LLM providers via enum or environment variable."""
 
-    _providers = {
+    _providers: dict[LLMProvider, Callable[..., BaseLLMProvider]] = {
         LLMProvider.GOOGLE: GoogleProvider,
         LLMProvider.GROQ: GroqProvider,
         LLMProvider.OPENAI: OpenAIProvider,
@@ -400,7 +402,7 @@ def llm_call(
     prompt: str,
     temperature: float = 0.2,
     response_schema: type[T] | None = None,
-) -> str | T:
+) -> str | T | None:
     """Wrapper for LLM calls with multi-provider support and structured output.
 
     Env vars:
