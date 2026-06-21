@@ -27,8 +27,6 @@ def _env_clean(name: str, default: str = "") -> str:
 
 
 # ── Configuration Constants ────────────────────────────────────────────────
-VECTOR_DB_PATH = _env_clean("VECTOR_DB_PATH", "./vector_db/vector_index")
-EMBEDDINGS_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 # MongoDB Atlas
 MONGODB_URI = _env_clean("MONGODB_URI", "")
@@ -43,12 +41,10 @@ OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
 # Parameters to techinical extraction and plan generation
 TECHNICAL_MAX_RESULTS = 10
 MAX_URLS_EXTRACT = 7
-CTX_PLAN_CHARS = 1200
 CTX_ABSTRACT_CHARS = 1400
 MIN_SECTION_PARAGRAPHS = 8
 MAX_IMAGES_SECTION = 6
 DELAY_BETWEEN_SECTIONS = 5
-MAX_REACT_ITERATIONS = 2
 EXTRACT_MIN_CHARS = 500
 SNIPPET_MIN_SCORE = 0.7
 
@@ -57,19 +53,12 @@ CHUNK_SIZE = 2400
 CHUNK_OVERLAP = 480
 TOP_K_WRITER = 6
 TOP_K_OBSERVATION = 5
-TOP_K_VERIFICATION = 6
 MAX_CORPUS_PROMPT = 25000
 CHUNK_MAX_CHARS = 600
 MAX_CHUNKS_TOTAL = 100
 
-# Anchors verify similarity threshold (cosine similarity)
-ANCHOR_MIN_SIM = 0.82
-
 HIST_MAX_TURNS = 6
-PLAN_MAX_CHARS = 3000
 CHUNKS_PER_QUERY = 5
-JUDGE_TOP_K = 12
-JUDGE_MAX_CORPUS_CHARS = 8000
 
 # Domains
 PRIORITY_DOMAINS = [
@@ -109,27 +98,6 @@ BLOCKED_DOMAINS_EXTRACT = [
     "proquest.com",
     "web.b.ebscohost.com",
 ]
-
-# Closing remarks
-CLOSING_REMARKS = {
-    "ok",
-    "pronto",
-    "pode continuar",
-    "esta bom",
-    "ta bom",
-    "suficiente",
-    "chega",
-    "finalizar",
-    "encerrar",
-    "avancar",
-    "proximo",
-    "continua",
-    "continuar",
-    "aceito",
-    "aprovado",
-    "finaliza",
-    "terminar",
-}
 
 # Output path constants
 PLANS_DIR = _env_clean("PLANS_DIR", "./runtime/plans")

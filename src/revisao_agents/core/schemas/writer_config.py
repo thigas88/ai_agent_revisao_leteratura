@@ -14,12 +14,6 @@ WritingMode = Literal["technical", "academic"]
 CorpusStrategy = Literal["web_first", "corpus_first"]
 ReviewLanguage = Literal["pt", "en"]
 
-# Human-readable language labels used to enforce language in prompts
-_LANGUAGE_LABELS: dict = {
-    "pt": "Brazilian Portuguese (pt-BR)",
-    "en": "English",
-}
-
 _REVIEW_TYPE_LABELS: dict = {
     "technical": {
         "pt": "Revisão Técnica",
@@ -65,11 +59,6 @@ class WriterConfig:
     review_type_label: str = "Revisão Técnica"
     language: ReviewLanguage = "pt"
     min_sources_per_section: int = 0  # 0 = no constraint; set via CLI
-
-    @property
-    def language_label(self) -> str:
-        """Full language name for use in prompts."""
-        return _LANGUAGE_LABELS.get(self.language, "Brazilian Portuguese (pt-BR)")
 
     @staticmethod
     def default_review_type_label(mode: str, language: str) -> str:

@@ -28,13 +28,3 @@ def build_technical_writing_workflow():
     builder.add_edge("write_sections", "consolidate")
     builder.add_edge("consolidate", END)
     return builder.compile()
-
-
-# Backward compatibility alias
-def build_workflow():
-    """Backward-compatible alias for build_technical_writing_workflow.
-
-    Returns:
-        StateGraph[TechnicalWriterState]: The compiled state graph representing the technical writing workflow.
-    """
-    return build_technical_writing_workflow()

@@ -23,9 +23,6 @@ def get_tracking_uri() -> str:
     return os.getenv("MLFLOW_TRACKING_URI", "sqlite:///./mlruns/mlflow.db")
 
 
-# Backwards-compatible alias — prefer ``get_tracking_uri()`` for new code.
-MLFLOW_TRACKING_URI: str = ""  # populated at first call via get_tracking_uri()
-
 # ---------------------------------------------------------------------------
 # Experiment registry
 # ---------------------------------------------------------------------------

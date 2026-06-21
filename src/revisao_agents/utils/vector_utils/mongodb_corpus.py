@@ -7,7 +7,6 @@ from openai import OpenAI
 from pymongo.collection import Collection
 
 from ...config import (
-    ANCHOR_MIN_SIM,
     CHUNK_OVERLAP,
     CHUNK_SIZE,
     CHUNKS_CACHE_DIR,
@@ -18,12 +17,10 @@ from ...config import (
     OPENAI_API_KEY,
     OPENAI_EMBEDDING_MODEL,
     SNIPPET_MIN_SCORE,
-    TOP_K_VERIFICATION,
     TOP_K_WRITER,
     VECTOR_INDEX_NAME,
 )
 from ...core.schemas.corpus import Chunk
-from ..file_utils.helpers import fuzzy_sim, normalize
 from ..search_utils.tavily_client import score_url  # import local
 
 
@@ -458,69 +455,6 @@ class CorpusMongoDB:
 
         return chunks
 
-    def get_neighbors(
-        self,
-        chunk: Chunk,
-        window: int = 1,
-        include_self: bool = True,
-    ) -> list[Chunk]:
-        """
-        Given a reference chunk, returns its neighbors in the same document.
-
-        Args:
-            chunk: Reference chunk (must have URL and chunk_idx).
-            window: How many chunks to search for on each side.
-            include_self: If True, includes the chunk itself in the result.
-
-        Returns:
-            List ordered by chunk_idx (previous → reference → next).
-        """
-        collection = self._get_collection()
-
-        idx = int(chunk.chunk_idx)  # numeric position within the document
-        idx_min = idx - window
-        idx_max = idx + window
-
-        try:
-            cursor = collection.find(
-                {
-                    "url": chunk.url,
-                    "chunk_idx": {"$gte": idx_min, "$lte": idx_max},
-                },
-                {"file_path": 1, "url": 1, "title": 1, "source_idx": 1, "chunk_idx": 1},
-            ).sort("chunk_idx", 1)
-
-            docs = list(cursor)
-            print(f"      📎 {len(docs)} chunks encontrados (janela ±{window} em '{chunk.url}')")
-        except Exception as e:
-            print(f"   ❌ Error searching for neighbors: {e}")
-            return []
-
-        results = []
-        for doc in docs:
-            if not include_self and doc.get("chunk_idx") == idx:
-                continue
-
-            fp = doc.get("file_path", "")
-            if fp and os.path.exists(fp):
-                text = self._read_chunk_from_file(fp)
-            else:
-                print(f"      ⚠️ File not found: {fp}")
-                text = ""
-
-            results.append(
-                Chunk(
-                    text=text,
-                    url=doc.get("url", ""),
-                    title=doc.get("title", ""),
-                    source_idx=doc.get("source_idx", 0),
-                    file_path=fp,
-                    chunk_idx=doc.get("chunk_idx", 0),
-                )
-            )
-
-        return results
-
     def get_url_chunks(self, url: str, max_chunks: int = 12) -> list[Chunk]:
         """
         Retrieve all stored chunks for a URL, sorted by their chunk index.
@@ -578,37 +512,6 @@ class CorpusMongoDB:
                 )
             )
         return results
-
-    def anchor_exists(self, anchor: str) -> tuple:
-        """
-        Check if an anchor exists in the corpus.
-
-        Args:
-            anchor: The anchor text to search for.
-
-        Returns:
-            A tuple (found: bool, score: float, text: str) indicating whether the anchor was found,
-            the similarity score, and the matching text.
-        """
-        if not anchor or len(anchor.strip()) < 15:
-            return False, 0.0, ""
-
-        anchor_norm = normalize(anchor)
-        candidates = self.query(anchor, top_k=TOP_K_VERIFICATION)
-
-        for c in candidates:
-            if anchor_norm in normalize(c.text):
-                return True, 1.0, c.text
-
-        best_score, best_text = 0.0, ""
-        for c in candidates:
-            score = fuzzy_sim(anchor_norm, normalize(c.text))
-            if score > best_score:
-                best_score = score
-                best_text = c.text
-
-        found = best_score >= ANCHOR_MIN_SIM
-        return found, best_score, best_text
 
     def render_prompt(
         self, query: str, max_chars: int = MAX_CORPUS_PROMPT, top_k: int = TOP_K_WRITER
