@@ -8,13 +8,10 @@ from gradio_app.handlers.review_parts.intent import (
     _classify_reference_intent,
     _extract_provided_reference_items,
     _extract_requested_citation_numbers,
-    _is_reference_request,
 )
 from gradio_app.handlers.review_parts.references import (
     _collect_reference_inventory,
-    _format_abnt_entry,
     _handle_format_provided_references_request,
-    _handle_reference_request,
     _is_metadata_complete,
 )
 
@@ -22,11 +19,6 @@ from gradio_app.handlers.review_parts.references import (
 def test_extract_requested_citation_numbers_brackets():
     text = "resolva [1] [6] [3] [10] em ABNT"
     assert _extract_requested_citation_numbers(text) == [1, 3, 6, 10]
-
-
-def test_is_reference_request_with_listing_phrase():
-    text = "liste todas as referências sem repetição usadas neste documento"
-    assert _is_reference_request(text) is True
 
 
 def test_classify_reference_intent_list_all():
@@ -85,67 +77,6 @@ def test_collect_reference_inventory_maps_numbered_and_citations():
     assert inv["cited_numbers"] == [1, 2, 3]
     assert len(inv["unique_references"]) == 2
     assert any("Bleidorn" in item for item in inv["non_numbered_mentions"])
-
-
-def test_format_abnt_entry_avoids_duplicated_doi_label():
-    metadata = {
-        "number": 1,
-        "raw": "",
-        "title": "Sample Title",
-        "doi": "DOI: 10.1234/abc.2025.001",
-        "url": "",
-        "year": "2025",
-        "file_path": "",
-    }
-    text = _format_abnt_entry(metadata)
-    assert "DOI: DOI:" not in text
-    assert "DOI: 10.1234/abc.2025.001" in text
-
-
-def test_format_abnt_entry_cleans_malformed_doi_and_sd_duplication():
-    metadata = {
-        "number": 1,
-        "raw": "",
-        "title": "Leonardo Maciel de Sousa TCC. 2025. DOI:",
-        "doi": "DOI:. [s.d.]. DOI: 10.1353/jod.2025.a970357",
-        "url": "https://hess.copernicus.org/articles/29/6811/2025/hess-29-6811-2025.html.",
-        "year": "",
-        "file_path": "",
-    }
-    text = _format_abnt_entry(metadata)
-    assert "DOI:." not in text
-    assert "DOI: 10.1353/jod.2025.a970357" in text
-    assert text.count("[s.d.].") <= 1
-
-
-def test_format_abnt_entry_does_not_duplicate_raw_fragment():
-    metadata = {
-        "number": 2,
-        "raw": "artigo final do projeto FACEPE FAPESP 24042025 para leitura de prova Val. 2022. DOI: 10.5194/hess-2022-334",
-        "title": "artigo final do projeto FACEPE FAPESP 24042025 para leitura de prova Val",
-        "doi": "10.5194/hess-2022-334",
-        "url": "https://www.frontiersin.org/journals/water/articles/10.3389/frwa.2026.1756052/full",
-        "year": "2022",
-        "file_path": "",
-    }
-    text = _format_abnt_entry(metadata)
-    assert text.lower().count("artigo final do projeto facepe") == 1
-
-
-def test_incomplete_metadata_guidance_when_web_disabled():
-    markdown = (
-        "## 1. Intro\n\n"
-        "Texto com citação [10].\n\n"
-        "### Referências desta seção\n"
-        "[10] /tmp/arquivo_local_sem_metadado.pdf\n"
-    )
-
-    with patch(
-        "gradio_app.handlers.review_parts.references.search_chunk_records",
-        return_value=[],
-    ):
-        reply, _meta = _handle_reference_request(markdown, "resolva [10] em ABNT", allow_web=False)
-    assert "ative **Allow web search**" in reply
 
 
 def test_provided_format_guidance_when_web_disabled():

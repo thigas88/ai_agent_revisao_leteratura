@@ -3,7 +3,6 @@ File utilities: file operations, path handling, and text helpers.
 """
 
 from .helpers import (
-    extract_anchors,
     fmt_chunks,
     fmt_snippets,
     is_paragraph_verifiable,
@@ -26,6 +25,5 @@ __all__ = [
     "truncate",
     "save_md",
     "normalize",
-    "extract_anchors",
     "is_paragraph_verifiable",
 ]

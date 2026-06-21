@@ -2,7 +2,7 @@
 
 Exposes the public session lifecycle functions (``start_review_session``,
 ``review_chat_turn``, ``confirm_review_edit``, ``cancel_review_edit``,
-``save_review_manual_edit``) and the ``ReviewManager`` orchestration class.
+``save_review_manual_edit``), wired directly into the Gradio UI in ``app.py``.
 """
 
 from __future__ import annotations
@@ -1017,49 +1017,3 @@ def save_review_manual_edit(
         _localized_text(language, "✅ Edição manual salva", "✅ Manual edit saved"),
         refreshed,
     )
-
-
-class ReviewManager:
-    """Orchestrate review session actions with a consistent API."""
-
-    def start_session(
-        self,
-        review_file: str,
-        history: list,
-        session_state: dict,
-    ) -> tuple[list, dict, str, str]:
-        return start_review_session(review_file, history, session_state)
-
-    def chat_turn(
-        self,
-        user_msg: str,
-        history: list,
-        session_state: dict,
-        web_enabled: bool = False,
-    ) -> tuple[list, dict, str, str]:
-        return review_chat_turn(user_msg, history, session_state, web_enabled=web_enabled)
-
-    def confirm_edit(
-        self,
-        history: list,
-        session_state: dict,
-    ) -> tuple[list, dict, str, str]:
-        return confirm_review_edit(history, session_state)
-
-    def cancel_edit(
-        self,
-        history: list,
-        session_state: dict,
-    ) -> tuple[list, dict, str, str]:
-        return cancel_review_edit(history, session_state)
-
-    def save_manual_edit(
-        self,
-        edited_text: str,
-        history: list,
-        session_state: dict,
-    ) -> tuple[list, dict, str, str]:
-        return save_review_manual_edit(edited_text, history, session_state)
-
-
-review_manager = ReviewManager()

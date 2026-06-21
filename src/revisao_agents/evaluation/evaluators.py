@@ -43,43 +43,6 @@ def extract_domain(url: str) -> str:
         return "unknown"
 
 
-def is_academic_domain(domain: str) -> bool:
-    """Determine if a given domain is likely to be academic in nature.
-
-    Args:
-        domain: The domain string to evaluate.
-
-    Returns:
-        True if the domain is likely academic, False otherwise.
-    """
-    academic_indicators = [
-        ".edu",
-        ".ac.",
-        "ac.uk",
-        "arxiv",
-        "scholar.google",
-        "researchgate",
-        "ieee",
-        "springer",
-        "nature",
-        "acm.org",
-        "doi.org",
-        "github.io",
-        "elsevier",
-        "scielo",
-        "sciencedirect",
-        "pubmed",
-        "mdpi",
-        "journals.",
-        "science",
-        "academia.edu",
-        "biorxiv",
-        "medrxiv",
-        "ssrn",
-    ]
-    return any(indicator in domain.lower() for indicator in academic_indicators)
-
-
 def parse_judge_response(response_dict: object, judge_name: str) -> dict:
     """Parse the response from a judge and handle any errors or unexpected formats.
 

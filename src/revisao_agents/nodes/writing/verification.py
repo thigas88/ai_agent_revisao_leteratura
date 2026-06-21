@@ -7,7 +7,6 @@ _count_verifiable_claims                : count claims that need fact-checking.
 _judge_paragraph_improved               : 3-level LLM judge (APPROVED/ADJUSTED/CORRECTED).
 _monitor_verification_rate              : decide if more context is needed.
 _search_for_additional_content          : complementary web search when rate is low.
-_verify_and_correct_adaptative_section  : full adaptive loop (legacy, no anchors).
 _verify_paragraph_with_anchor           : anchor-directed single-paragraph check.
 _verify_and_correct_section_with_anchor : full anchor-directed adaptive loop.
 """
@@ -312,125 +311,6 @@ def _search_for_additional_content(
 
 
 # ---------------------------------------------------------------------------
-# Adaptive verification — legacy (no explicit anchors)
-# ---------------------------------------------------------------------------
-
-
-def _verify_and_correct_adaptative_section(
-    text_section: str,
-    corpus: "CorpusMongoDB",
-    full_corpus_prompt: str,
-    title: str,
-    section_sources: str,
-    expected_content: str = "",
-    language: str = "pt",
-) -> tuple[str, str, dict]:
-    """Adaptive verification without explicit anchor routing (legacy fallback).
-
-    Args:
-        text_section: The section text to verify and correct.
-        corpus: The corpus object to query for relevant sources.
-        full_corpus_prompt: The full corpus context to use as a fallback.
-        title: The title of the section (for logging).
-        section_sources: The sources relevant to this section (for logging).
-        expected_content: A brief description of expected content (used for complementary search).
-        language: The language of the section (default is "pt").
-
-    Returns:
-        A tuple containing:
-            - The corrected section text after adaptive verification.
-            - A log report summarizing the verification process.
-            - A dictionary of verification statistics.
-    """
-    attempted_urls: set = set()
-    iteration = 0
-
-    while iteration < 3:
-        iteration += 1
-        print(f"\n     └─ Verification iter {iteration}/3")
-
-        blocks = re.split(r"\n{2,}", text_section.strip())
-        result = []
-        log_lines = [f"\n### Adaptive Verification — {title} (iter {iteration})"]
-
-        stats = {
-            "total": 0,
-            "approved": 0,
-            "adjusted": 0,
-            "corrected": 0,
-            "structural": 0,
-            "verifiable": 0,
-            "skipped": 0,
-        }
-
-        for i, block in enumerate(blocks):
-            block = block.strip()
-            if not block:
-                continue
-
-            clean_block = re.sub(r'\[ANCHOR:\s*"[^"]*"\]', "", block).strip()
-            clean_block = re.sub(r"  +", " ", clean_block)
-
-            if clean_block.startswith("#") or len(clean_block) < 60:
-                result.append(clean_block)
-                stats["skipped"] += 1
-                continue
-
-            stats["total"] += 1
-
-            sources = corpus.render_prompt(clean_block, max_chars=3000)[0]
-
-            if not sources.strip():
-                result.append(clean_block)
-                stats["approved"] += 1
-                stats["structural"] += 1
-                log_lines.append(f"  par.{i + 1}: ⏭️  NO SOURCES")
-                continue
-
-            final_text, level, log_entry, is_verifiable = _judge_paragraph_improved(
-                clean_block, sources, title
-            )
-
-            result.append(final_text)
-            log_lines.append(f"  par.{i + 1}: {log_entry}")
-
-            if is_verifiable:
-                stats["verifiable"] += 1
-            if "APPROVED" in level or "STRUCTURAL" in level:
-                stats["approved"] += 1
-            elif "ADJUSTED" in level:
-                stats["adjusted"] += 1
-            else:
-                stats["corrected"] += 1
-
-        needs_more, reason = _monitor_verification_rate(stats)
-        verified = stats["approved"] + stats["adjusted"]
-        rate = (verified / stats["verifiable"] * 100) if stats["verifiable"] > 0 else 100
-        log_lines.append(f"\n**Result:** {verified}/{stats['verifiable']} ({rate:.0f}%) — {reason}")
-        print(f"     📊 {rate:.0f}% | {reason}")
-
-        if not needs_more or iteration >= 3:
-            break
-
-        num_novos, corpus, msg = _search_for_additional_content(
-            title, expected_content, corpus, attempted_urls, language=language
-        )
-        log_lines.append(f"\n**Search:** {msg}")
-        if num_novos == 0:
-            break
-
-    corrected_text = "\n\n".join(p for p in result if p)
-    corrected_text = re.sub(r'\[ANCHOR:\s*"[^"]*"\]', "", corrected_text)
-    corrected_text = re.sub(r"\n{3,}", "\n\n", corrected_text)
-
-    verified = stats["approved"] + stats["adjusted"]
-    final_rate = (verified / stats["verifiable"] * 100) if stats["verifiable"] > 0 else 100
-    print(f"\n     📊 FINAL: {verified}/{stats['verifiable']} ({final_rate:.0f}%)")
-
-    report = "\n".join(log_lines)
-    return corrected_text, report, stats
-
-
 # ---------------------------------------------------------------------------
 # Anchor-directed single paragraph
 # ---------------------------------------------------------------------------

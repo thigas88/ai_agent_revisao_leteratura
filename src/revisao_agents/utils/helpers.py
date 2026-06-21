@@ -4,7 +4,6 @@ Now located at: utils/file_utils/helpers.py
 """
 
 from .file_utils.helpers import (
-    extract_anchors,
     fmt_chunks,
     fmt_snippets,
     fuzzy_search_in_text,
@@ -31,6 +30,5 @@ __all__ = [
     "normalize",
     "fuzzy_sim",
     "fuzzy_search_in_text",
-    "extract_anchors",
     "is_paragraph_verifiable",
 ]

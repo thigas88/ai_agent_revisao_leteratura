@@ -284,19 +284,6 @@ def parse_academic_plan(text: str) -> tuple:
     return theme, summary, sections
 
 
-def extract_anchors(text: str) -> list:
-    """Extracts anchor texts [ANCHOR: "..."] from a text block.
-
-    Args:
-        text: The input text containing anchor patterns.
-
-    Returns:
-        A list of anchor texts extracted from the input text, where each anchor is the content inside the [ANCHOR: "..."] pattern, stripped of leading and trailing whitespace.
-    """
-    pattern = re.compile(r'\[ANCHOR:\s*"((?:[^"\\]|\\.)*)"\]', re.DOTALL)
-    return [m.strip() for m in pattern.findall(text)]
-
-
 def contains_assertion_verbs(text: str) -> bool:
     """
     Checks if a string contains common English or Portuguese narrative/assertive verbs.

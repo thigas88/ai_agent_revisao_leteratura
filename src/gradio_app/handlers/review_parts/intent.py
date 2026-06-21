@@ -7,117 +7,9 @@ source requests, image suggestions, and confirmation/cancellation flows.
 
 from __future__ import annotations
 
-import hashlib
 import re
 
 from .document import _extract_quoted_snippet
-
-
-def _intent(user_text: str) -> str:
-    """Infer user intent from the input text based on keyword heuristics.
-
-    Args:
-        user_text: The input text from the user.
-
-    Returns:
-        A string label representing the inferred intent.
-    """
-    text = user_text.lower().strip()
-    if text in {
-        "confirm",
-        "confirm edit",
-        "apply edit",
-        "yes apply",
-        "yes",
-        "confirmar",
-        "confirmar edição",
-        "aplicar edição",
-        "aplicar edicao",
-        "sim",
-    }:
-        return "apply_pending_edit"
-    if text in {
-        "cancel",
-        "cancel edit",
-        "discard edit",
-        "no",
-        "cancelar",
-        "cancelar edição",
-        "cancelar edicao",
-        "descartar edição",
-        "descartar edicao",
-        "não",
-        "nao",
-    }:
-        return "cancel_pending_edit"
-    if any(
-        phrase in text
-        for phrase in [
-            "main finding",
-            "main findings",
-            "key finding",
-            "key findings",
-            "principais achados",
-            "achado principal",
-            "achados principais",
-        ]
-    ):
-        return "summarize_main_findings"
-    if any(
-        phrase in text
-        for phrase in [
-            "cited in section",
-            "papers are cited",
-            "references in section",
-            "sources in section",
-            "artigos citados",
-            "referências na seção",
-            "referencias na secao",
-            "fontes na seção",
-            "fontes na secao",
-        ]
-    ):
-        return "list_section_citations"
-    if ("confirmed" in text and "paragraph" in text) or (
-        "confirmado" in text and ("parágrafo" in text or "paragrafo" in text)
-    ):
-        return "confirm_paragraph_by_authors"
-    if any(
-        phrase in text
-        for phrase in [
-            "more documents",
-            "more sources",
-            "additional documents",
-            "additional sources",
-            "mais documentos",
-            "mais fontes",
-        ]
-    ) and any(phrase in text for phrase in ["phrase", "excerpt", "snippet", "frase", "trecho"]):
-        return "suggest_more_documents_for_phrase"
-    if any(
-        word in text
-        for word in [
-            "edit",
-            "fix",
-            "add",
-            "rewrite",
-            "improve",
-            "update",
-            "modify",
-            "replace",
-            "remove",
-            "melhore",
-            "corrija",
-            "adicionar",
-            "reescreva",
-            "atualize",
-            "modifique",
-            "substitua",
-            "remova",
-        ]
-    ):
-        return "propose_targeted_edit"
-    return "summarize_main_findings"
 
 
 def _explicit_web_request(user_text: str) -> bool:
@@ -362,18 +254,6 @@ def _classify_phrase_reference_intent(user_text: str) -> tuple[bool, dict[str, b
     )
 
 
-def _is_phrase_reference_query(user_text: str) -> bool:
-    """Detect requests asking for the source/reference of a specific phrase/snippet.
-
-    Args:
-        user_text: The input text from the user.
-
-    Returns:
-        True if the message asks for a phrase reference.
-    """
-    return _classify_phrase_reference_intent(user_text)[0]
-
-
 def _build_phrase_reference_query_seed(user_text: str) -> str:
     """Build the best-effort query seed from quoted text or from the full user message.
 
@@ -421,19 +301,6 @@ def _extract_requested_citation_numbers(user_text: str) -> list[int]:
         )
     ]
     return sorted(dict.fromkeys(fallback))
-
-
-def _is_reference_request(user_text: str) -> bool:
-    """Detect if the user is asking for references based on intent classification.
-
-    Args:
-        user_text: The input text from the user.
-
-    Returns:
-        True if the intent is reference-related.
-    """
-    intent = _classify_reference_intent(user_text)
-    return intent in {"list_all", "format_provided", "resolve_numbers"}
 
 
 def _contains_keyword(text: str, keyword: str) -> bool:
@@ -567,19 +434,6 @@ def _extract_provided_reference_items(user_text: str) -> list[str]:
         if len(filtered) >= 1:
             return filtered
     return []
-
-
-def _reference_request_fingerprint(user_text: str) -> str:
-    """Return a stable fingerprint for a reference request.
-
-    Args:
-        user_text: The input text from the user.
-
-    Returns:
-        A short hash fingerprint.
-    """
-    normalized = re.sub(r"\s+", " ", (user_text or "").strip().lower())
-    return hashlib.sha1(normalized.encode("utf-8")).hexdigest()[:12]
 
 
 def _is_affirmative_confirmation(user_text: str) -> bool:

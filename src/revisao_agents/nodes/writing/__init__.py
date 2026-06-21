@@ -34,7 +34,6 @@ from .verification import (
     _judge_paragraph_improved,
     _monitor_verification_rate,
     _search_for_additional_content,
-    _verify_and_correct_adaptative_section,
     _verify_and_correct_section_with_anchor,
     _verify_paragraph_with_anchor,
 )
@@ -59,7 +58,6 @@ __all__ = [
     "_judge_paragraph_improved",
     "_monitor_verification_rate",
     "_search_for_additional_content",
-    "_verify_and_correct_adaptative_section",
     "_verify_paragraph_with_anchor",
     "_verify_and_correct_section_with_anchor",
 ]
