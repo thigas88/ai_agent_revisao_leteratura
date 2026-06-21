@@ -12,7 +12,7 @@ import os
 import re
 from datetime import datetime
 
-from src.revisao_agents.config import REVIEWS_DIR
+from revisao_agents.config import REVIEWS_DIR
 
 
 def list_review_files() -> list[str]:

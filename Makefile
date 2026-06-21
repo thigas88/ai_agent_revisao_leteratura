@@ -42,7 +42,7 @@ clean:          ## Remove build artifacts and caches
 	rm -rf .pytest_cache htmlcov .ruff_cache .mypy_cache dist build
 	find . -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 
-MLFLOW_BACKEND_STORE_URI ?= sqlite:///./mlruns/mlflow.db
+MLFLOW_BACKEND_STORE_URI ?= sqlite:///./runtime/mlruns/mlflow.db
 MLFLOW_HOST ?= 127.0.0.1
 MLFLOW_PORT ?= 5000
 

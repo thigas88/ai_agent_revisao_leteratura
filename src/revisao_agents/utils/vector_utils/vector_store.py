@@ -15,9 +15,9 @@ from ...config import (
     VECTOR_INDEX_NAME,
 )
 
-_client = None
-_collection = None
-_openai_client = None
+_client: pymongo.MongoClient | None = None
+_collection: Collection | None = None
+_openai_client: OpenAI | None = None
 
 # OpenAI embedding model
 OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"

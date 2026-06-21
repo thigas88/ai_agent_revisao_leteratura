@@ -13,7 +13,7 @@ O agente percorre cada seção do plano, busca evidências no corpus local (Mong
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
 | **Modo** | Seleção (Radio) | `Technical` (capítulo técnico) ou `Academic` (revisão narrativa) |
-| **Plano** | Dropdown | Seleciona o arquivo `.md` de plano da pasta `plans/` — atualiza automaticamente ao mudar o modo |
+| **Plano** | Dropdown | Seleciona o arquivo `.md` de plano da pasta `runtime/plans/` — atualiza automaticamente ao mudar o modo |
 | **Idioma** | Seleção (Radio) | `Português (pt-BR)` ou `English` |
 | **Mínimo de fontes por seção** | Slider (0–10) | Número mínimo de fontes distintas que cada seção deve citar (0 = sem restrição) |
 | **Busca web (Tavily)** | Checkbox | Permite que o agente busque fontes na internet além do corpus local |
@@ -25,7 +25,7 @@ O agente percorre cada seção do plano, busca evidências no corpus local (Mong
 
 ## Fluxo passo a passo
 
-1. **Certifique-se** de ter um plano gerado na aba 📋 Plan (ou use um arquivo `.md` de plano existente em `plans/`).
+1. **Certifique-se** de ter um plano gerado na aba 📋 Plan (ou use um arquivo `.md` de plano existente em `runtime/plans/`).
 2. Selecione o **modo** de escrita: `Technical` para capítulo técnico, `Academic` para revisão narrativa.
 3. O dropdown de planos se atualiza automaticamente. **Selecione o plano** desejado.
 4. Escolha o **idioma** do documento gerado.
@@ -34,7 +34,7 @@ O agente percorre cada seção do plano, busca evidências no corpus local (Mong
 7. Clique em **"✍️ Start Writing"**.
 8. Acompanhe o progresso no chat. Cada mensagem indica de qual nó ou seção o agente está trabalhando.
 9. Ao finalizar, o documento completo aparece na área de Markdown abaixo do chat.
-10. O arquivo é salvo automaticamente em `reviews/revisao_<tema>_<data>.md`.
+10. O arquivo é salvo automaticamente em `runtime/reviews/revisao_<tema>_<data>.md`.
 
 > **Atenção:** A escrita pode demorar vários minutos dependendo do número de seções, do provedor LLM escolhido e da disponibilidade de fontes. Não feche a aba durante a execução.
 
@@ -47,7 +47,7 @@ O agente percorre cada seção do plano, busca evidências no corpus local (Mong
 ## Erros comuns e como resolver
 
 ### Nenhum plano aparece no dropdown
-- Verifique se existe algum arquivo `.md` na pasta `plans/`.
+- Verifique se existe algum arquivo `.md` na pasta `runtime/plans/`.
 - Mude o modo (Technical ↔ Academic) para recarregar a lista.
 - Gere um plano na aba **📋 Plan** primeiro.
 
@@ -69,5 +69,5 @@ pymongo.errors.ServerSelectionTimeoutError
 - Certifique-se de que sua cota Tavily não foi excedida em https://app.tavily.com.
 
 ### Escrita interrompida no meio
-- O agente salva progresso por seção — o arquivo parcial pode estar em `reviews/`.
+- O agente salva progresso por seção — o arquivo parcial pode estar em `runtime/reviews/`.
 - Reinicie a escrita com o mesmo plano; seções já escritas podem ser reutilizadas.

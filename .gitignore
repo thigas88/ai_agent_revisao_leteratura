@@ -41,20 +41,15 @@ coverage.xml
 Thumbs.db
 
 # ── Project-specific ──
-chunks_cache/
 vector_db*/
 *.md.bak
-plans/
-reviews/
-tavily_searchs/
-search_logs/
-roadmap/
-reports/
+management/
+runtime/
 uv.lock
 .github/agents/ai_engineering*
 .github/agents/lin*
 *.db
-chunks_cache/
 .playwright-mcp/
-checkpoints/
-test_checkpoints/
+
+.claude/
+CLAUDE*

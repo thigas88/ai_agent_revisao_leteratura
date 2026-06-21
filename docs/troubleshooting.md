@@ -169,7 +169,7 @@ Verifique se a senha não tem caracteres especiais que precisam de codificação
 **Correção:**
 ```env
 # Use um caminho relativo com permissão de escrita
-CHECKPOINT_PATH=checkpoints/checkpoints.db
+CHECKPOINT_PATH=runtime/checkpoints/checkpoints.db
 ```
 Certifique-se de que o usuário atual tem permissão de escrita no diretório.
 
@@ -190,7 +190,7 @@ Certifique-se de que o usuário atual tem permissão de escrita no diretório.
 **Correção:** Mude para SQLite:
 ```env
 CHECKPOINT_TYPE=sqlite
-CHECKPOINT_PATH=checkpoints/checkpoints.db
+CHECKPOINT_PATH=runtime/checkpoints/checkpoints.db
 ```
 
 ---
@@ -315,13 +315,13 @@ uv run python run_ui.py
 
 ### Verificar logs de busca Tavily
 
-Todas as buscas Tavily são registradas em `./search_logs/` (configurável via `SEARCH_LOGS_DIR`). Cada busca cria um arquivo Markdown com:
+Todas as buscas Tavily são registradas em `./runtime/search_logs/` (configurável via `SEARCH_LOGS_DIR`). Cada busca cria um arquivo Markdown com:
 - Consulta realizada
 - Resultados (URLs, títulos, trechos)
 - Uso de créditos (se `TAVILY_INCLUDE_USAGE=true`)
 
 ```bash
-ls search_logs/
+ls runtime/search_logs/
 # academic_aprendizado_maquina_supervisionado_20260418_143201.md
 ```
 
@@ -359,7 +359,7 @@ R: Sim, cada sessão usa um ID de thread diferente. Com checkpointing SQLite, to
 R: Inicie uma nova sessão com um novo tema. Sessões antigas permanecem no arquivo SQLite e não afetam novas sessões.
 
 **P: Como apagar todas as minhas sessões salvas?**
-R: Delete o arquivo SQLite: `rm checkpoints/checkpoints.db`. Todo o histórico de sessões será perdido.
+R: Delete o arquivo SQLite: `rm runtime/checkpoints/checkpoints.db`. Todo o histórico de sessões será perdido.
 
 **P: As buscas Tavily estão lentas. Como posso acelerar?**
 R: Defina `TAVILY_SEARCH_DEPTH=fast` e `TAVILY_NUM_RESULTS=3`. Veja o [Guia de ajuste do Tavily](tavily_tuning_guide.md).
@@ -371,7 +371,7 @@ R: Forneça um tópico mais específico. Em vez de "Aprendizado de máquina", te
 R: `uv run pytest tests/unit/ -q` — os testes unitários são totalmente mockados e não precisam de serviços externos.
 
 **P: Onde os planos e revisões gerados são salvos?**
-R: Em `./plans/` e `./reviews/` por padrão. Configurável via `PLANS_DIR` e `REVIEWS_DIR`.
+R: Em `./runtime/plans/` e `./runtime/reviews/` por padrão. Configurável via `PLANS_DIR` e `REVIEWS_DIR`.
 
 ---
 

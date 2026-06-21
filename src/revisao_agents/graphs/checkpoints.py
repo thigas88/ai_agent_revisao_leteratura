@@ -21,7 +21,7 @@ def get_checkpointer() -> Any:
 
     Environment Variables:
         - CHECKPOINT_TYPE: 'memory' (default) | 'sqlite'. Specifies the type of checkpointer to use.
-        - CHECKPOINT_PATH: File path for SQLite database (default: 'checkpoints/checkpoints.db'). Must be a valid path.
+        - CHECKPOINT_PATH: File path for SQLite database (default: 'runtime/checkpoints/checkpoints.db'). Must be a valid path.
 
     Returns:
         A checkpointer instance compatible with LangGraph's checkpointing system.
@@ -32,7 +32,7 @@ def get_checkpointer() -> Any:
     """
     vars = get_checkpointer_vars()
     checkpoint_type = vars.get("CHECKPOINT_TYPE", "memory")
-    checkpoint_path = vars.get("CHECKPOINT_PATH", "checkpoints/checkpoints.db")
+    checkpoint_path = vars.get("CHECKPOINT_PATH", "runtime/checkpoints/checkpoints.db")
 
     if not checkpoint_path or not isinstance(checkpoint_path, str):
         raise ValueError("CHECKPOINT_PATH must be a non-empty string")
@@ -89,7 +89,7 @@ def list_thread_ids() -> list[str]:
     """
     vars = get_checkpointer_vars()
     checkpoint_type = vars.get("CHECKPOINT_TYPE", "memory")
-    checkpoint_path = vars.get("CHECKPOINT_PATH", "checkpoints/checkpoints.db")
+    checkpoint_path = vars.get("CHECKPOINT_PATH", "runtime/checkpoints/checkpoints.db")
 
     if checkpoint_type != "sqlite":
         return []

@@ -33,6 +33,8 @@ revisao_agents/
 │       ├── core/
 │       │   └── schemas/   ← Pydantic models compartilhados
 │       ├── utils/         ← Utilitários (llm_providers, vector_store, tavily, …)
+│       ├── observability/ ← Rastreamento MLflow (experimentos, métricas)
+│       ├── evaluation/    ← Avaliadores de qualidade de busca/snippets
 │       ├── config.py      ← Configuração via pydantic-settings + .env
 │       ├── state.py       ← TypedDict de estado do LangGraph
 │       ├── hitl.py        ← Nó Human-in-the-Loop
@@ -40,8 +42,9 @@ revisao_agents/
 │       └── __main__.py    ← Menu interativo (python -m revisao_agents)
 ├── tests/
 ├── docs/
-├── plans/                 ← Planos gerados pelos workflows
-├── reviews/               ← Revisões/capítulos gerados
+├── learning/               ← Prática/aprendizado: examples/, notebooks/, scripts manuais
+├── management/             ← Roadmap, sprints, relatórios (não versionado)
+├── runtime/                ← Saída gerada em runtime: plans/, reviews/, caches, checkpoints (não versionado)
 └── .env.example           ← Template de configuração
 ```
 
@@ -50,15 +53,15 @@ revisao_agents/
 | Modo | Comando | Porta/Saída |
 |------|---------|-------------|
 | UI Gradio | `uv run python run_ui.py` | http://localhost:7860 |
-| CLI script | `uv run revisao-agents [TEMA]` | stdout + `$PLANS_DIR` (padrão: `plans/`) |
+| CLI script | `uv run revisao-agents [TEMA]` | stdout + `$PLANS_DIR` (padrão: `runtime/plans/`) |
 | Menu interativo | `uv run python -m revisao_agents` | stdout + `$PLANS_DIR` + `$REVIEWS_DIR` |
 
 ## Abas da UI
 
 | Aba | Workflow Acionado | Saída |
 |-----|-------------------|-------|
-| 📋 Plan | `build_review_graph(academic/technical)` | `plans/*.md` |
-| ✍️ Write | `build_technical_writing_workflow()` | `reviews/*.md` |
+| 📋 Plan | `build_review_graph(academic/technical)` | `runtime/plans/*.md` |
+| ✍️ Write | `build_technical_writing_workflow()` | `runtime/reviews/*.md` |
 | 🤖 Revisão Interativa | `ReviewAgent` (ReAct loop) | edição do arquivo |
 | 📁 Index PDFs | `ingest_pdf_folder()` | MongoDB chunks |
 | 📚 References | `run_reference_formatter()` | markdown formatado |

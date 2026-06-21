@@ -68,7 +68,7 @@ uv run python -m revisao_agents
 
 # CLI script — planejamento
 uv run revisao-agents "Meu tema" --review-type academic
-uv run revisao-agents "Meu tema" --review-type technical --rounds 4 --output plans/plano.md
+uv run revisao-agents "Meu tema" --review-type technical --rounds 4 --output runtime/plans/plano.md
 
 # Ajuda
 uv run revisao-agents --help

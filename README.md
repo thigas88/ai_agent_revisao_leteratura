@@ -112,7 +112,7 @@ MONGODB_DB=revisao_agents
 TEMPERATURE=0.3
 LLM_MODEL=gpt-4o-mini
 CHECKPOINT_TYPE=sqlite       # memory | sqlite — Tipo de persistência para workflows LangGraph
-CHECKPOINT_PATH=checkpoints/checkpoints.db  # Caminho para o banco SQLite (se CHECKPOINT_TYPE=sqlite)
+CHECKPOINT_PATH=runtime/checkpoints/checkpoints.db  # Caminho para o banco SQLite (se CHECKPOINT_TYPE=sqlite)
 ```
 
 ### Matriz de requisitos por funcionalidade
@@ -246,8 +246,9 @@ revisao_agents/
 │   ├── cli.md             ← Documentação da CLI
 │   ├── contas_e_credenciais.md ← Guia de credenciais
 │   └── architecture.md    ← Arquitetura do sistema
-├── plans/                 ← Planos gerados
-├── reviews/               ← Revisões geradas
+├── learning/              ← Material de prática/aprendizado (examples/, notebooks/, scripts manuais)
+├── management/            ← Roadmap, sprints, relatórios (não versionado)
+├── runtime/               ← Saída gerada em tempo de execução: plans/, reviews/, caches, checkpoints (não versionado)
 └── .env.example           ← Modelo de configuração
 ```
 

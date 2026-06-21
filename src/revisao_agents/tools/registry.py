@@ -16,7 +16,7 @@ from .tavily_web_search import (
     extract_tavily,
     search_tavily,
     search_tavily_images,
-    search_tavily_incremental,
+    search_tavily_incremental_tool,
     search_tavily_technical,
 )
 
@@ -24,7 +24,7 @@ TOOLS: list[BaseTool] = [
     get_current_date,
     search_academic_corpus,
     search_tavily,
-    search_tavily_incremental,
+    search_tavily_incremental_tool,
     search_tavily_technical,
     search_tavily_images,
     extract_tavily,

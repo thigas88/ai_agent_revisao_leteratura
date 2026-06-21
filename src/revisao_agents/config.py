@@ -132,10 +132,10 @@ CLOSING_REMARKS = {
 }
 
 # Output path constants
-PLANS_DIR = _env_clean("PLANS_DIR", "./plans")
-REVIEWS_DIR = _env_clean("REVIEWS_DIR", "./reviews")
-SEARCH_LOGS_DIR = _env_clean("SEARCH_LOGS_DIR", "./search_logs")
-CHUNKS_CACHE_DIR = _env_clean("CHUNKS_CACHE_DIR", "./chunks_cache")
+PLANS_DIR = _env_clean("PLANS_DIR", "./runtime/plans")
+REVIEWS_DIR = _env_clean("REVIEWS_DIR", "./runtime/reviews")
+SEARCH_LOGS_DIR = _env_clean("SEARCH_LOGS_DIR", "./runtime/search_logs")
+CHUNKS_CACHE_DIR = _env_clean("CHUNKS_CACHE_DIR", "./runtime/chunks_cache")
 
 
 def ensure_runtime_dirs() -> None:
@@ -433,7 +433,7 @@ def get_checkpointer_vars() -> dict:
     """
     return {
         "CHECKPOINT_TYPE": os.getenv("CHECKPOINT_TYPE", "memory").lower(),
-        "CHECKPOINT_PATH": os.getenv("CHECKPOINT_PATH", "checkpoints/checkpoints.db"),
+        "CHECKPOINT_PATH": os.getenv("CHECKPOINT_PATH", "runtime/checkpoints/checkpoints.db"),
     }
 
 

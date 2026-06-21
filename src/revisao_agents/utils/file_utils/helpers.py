@@ -183,7 +183,7 @@ def parse_technical_plan(text: str) -> tuple:
     if m:
         theme = m.group(1).replace("*", "").strip()
     summary = text[:1200].strip()
-    sections = []
+    sections: list[dict] = []
     pattern = r"\|\s*([0-9\.]+)\s*\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|\s*([^|]*)\s*\|"
     for level, title, cont_esp, resources in re.findall(pattern, text):
         level_clean = level.strip()
@@ -241,7 +241,7 @@ def parse_academic_plan(text: str) -> tuple:
     content = inner.group(1) if inner else text
 
     summary = content[:1200].strip()
-    sections = []
+    sections: list[dict] = []
 
     # Primary: 3-column table  | N. Title | Objective | TTopics |
     pattern = r"\|\s*\*?\*?(\d[\d\.]*\.?\s+[^|*]+?)\*?\*?\s*\|\s*([^|]+)\s*\|\s*([^|]*)\s*\|"

@@ -10,10 +10,10 @@ from __future__ import annotations
 import mlflow
 import pytest
 from dotenv import load_dotenv
-from observability import workflow_run
-from observability.mlflow_config import EXP_PLANNING_TECHNICAL, get_tracking_uri
 
 from revisao_agents.nodes.technical import initial_technical_search_node
+from revisao_agents.observability import workflow_run
+from revisao_agents.observability.mlflow_config import EXP_PLANNING_TECHNICAL, get_tracking_uri
 from revisao_agents.state import ReviewState
 
 load_dotenv()

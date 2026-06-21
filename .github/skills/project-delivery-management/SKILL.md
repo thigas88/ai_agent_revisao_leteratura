@@ -12,8 +12,8 @@ user-invocable: true
 Run this repository with a repeatable Data Product Manager and Delivery Manager workflow that converts roadmap goals into executable weekly sprints and validates execution through evidence files.
 
 Primary sources in this project:
-- roadmap plans: roadmap/
-- execution evidence: reports/
+- roadmap plans: management/roadmap/
+- execution evidence: management/reports/
 
 ## When to Use
 
@@ -46,7 +46,7 @@ Apply these skill groups while planning and tracking delivery:
 
 ### 1) Intake and objective alignment
 
-- Read the active roadmap file in roadmap/.
+- Read the active roadmap file in management/roadmap/.
 - Confirm target phase, target week, and desired output format.
 - Produce a one-line sprint objective and 3-5 success criteria.
 
@@ -56,7 +56,7 @@ Output:
 
 ### 2) Baseline evidence read
 
-- Inspect reports/ for files that prove completed work.
+- Inspect management/reports/ for files that prove completed work.
 - Build a planned-versus-evidence matrix:
   - planned artifact
   - evidence file path
@@ -165,7 +165,7 @@ A sprint plan is complete only if all checks pass:
 
 - roadmap phase and week are explicitly stated
 - every story includes all mandatory Jira fields
-- every deliverable has an evidence file target in reports/
+- every deliverable has an evidence file target in management/reports/
 - risks have mitigation and escalation triggers
 - execution order is explicit
 - status report includes all mandatory KPIs
@@ -195,7 +195,7 @@ A sprint plan is complete only if all checks pass:
 
 ## Anti-Patterns to Avoid
 
-- claiming completion without evidence in reports/
+- claiming completion without evidence in management/reports/
 - stories without acceptance criteria
 - generic plans without owners or estimates
 - ignoring dependencies during sequencing
@@ -204,5 +204,5 @@ A sprint plan is complete only if all checks pass:
 ## References
 
 - Asana PM skills article: https://asana.com/pt/resources/project-management-skills
-- Project roadmap and planning files in roadmap/
-- Execution evidence files in reports/
+- Project roadmap and planning files in management/roadmap/
+- Execution evidence files in management/reports/

@@ -79,12 +79,24 @@ class WriterConfig:
             _REVIEW_TYPE_LABELS["technical"]["pt"],
         )
 
+    @staticmethod
+    def normalize_language(value: str) -> ReviewLanguage:
+        """Coerce a raw, unvalidated language string (CLI input, UI dropdown) into ReviewLanguage.
+
+        Args:
+            value: Raw language string from a system boundary (user input, UI component).
+
+        Returns:
+            "en" if the value starts with "en" (case-insensitive), otherwise "pt".
+        """
+        return "en" if value.strip().lower().startswith("en") else "pt"
+
     # --------------------------------------------------------------------------
     # Factory helpers
     # --------------------------------------------------------------------------
 
     @classmethod
-    def technical(cls, language: str = "pt", min_sources: int = 0) -> WriterConfig:
+    def technical(cls, language: ReviewLanguage = "pt", min_sources: int = 0) -> WriterConfig:
         """Default technical writing configuration.
 
         Args:
@@ -105,7 +117,7 @@ class WriterConfig:
         )
 
     @classmethod
-    def academic(cls, language: str = "pt", min_sources: int = 4) -> WriterConfig:
+    def academic(cls, language: ReviewLanguage = "pt", min_sources: int = 4) -> WriterConfig:
         """Academic systematic-review writing configuration.
 
         Args:

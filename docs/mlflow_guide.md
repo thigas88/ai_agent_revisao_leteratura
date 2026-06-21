@@ -6,7 +6,7 @@ Este guia explica como usar o MLflow para rastrear experimentos nos workflows do
 
 ## O que é rastreado
 
-O MLflow é configurado no pacote `observability/` (isolado da lógica de execução) e rastreia:
+O MLflow é configurado no pacote `src/revisao_agents/observability/` e rastreia:
 
 | Experimento             | Workflow associado                        |
 |-------------------------|-------------------------------------------|
@@ -46,15 +46,15 @@ MLFLOW_BACKEND_STORE_URI=sqlite:///./meu_backend.db make mlflow-start
 
 | Variável               | Padrão                            | Descrição                                   |
 |------------------------|-----------------------------------|---------------------------------------------|
-| `MLFLOW_TRACKING_URI`  | `sqlite:///./mlruns/mlflow.db`    | URI do backend de rastreamento              |
+| `MLFLOW_TRACKING_URI`  | `sqlite:///./runtime/mlruns/mlflow.db`    | URI do backend de rastreamento              |
 | `MLFLOW_HOST`          | `127.0.0.1`                       | Host para o servidor MLflow UI              |
 | `MLFLOW_PORT`          | `5000`                            | Porta para o servidor MLflow UI             |
-| `MLFLOW_BACKEND_STORE_URI` | `sqlite:///./mlruns/mlflow.db` | URI do backend para o comando `make mlflow-start` |
+| `MLFLOW_BACKEND_STORE_URI` | `sqlite:///./runtime/mlruns/mlflow.db` | URI do backend para o comando `make mlflow-start` |
 
 Configure no `.env`:
 
 ```dotenv
-MLFLOW_TRACKING_URI=sqlite:///./mlruns/mlflow.db
+MLFLOW_TRACKING_URI=sqlite:///./runtime/mlruns/mlflow.db
 ```
 
 ---
@@ -62,13 +62,13 @@ MLFLOW_TRACKING_URI=sqlite:///./mlruns/mlflow.db
 ## Estrutura do pacote observability/
 
 ```
-observability/
+src/revisao_agents/observability/
 ├── __init__.py          # re-exporta initialize_experiments
 ├── mlflow_config.py     # constantes e leitura de variáveis de ambiente
 └── mlflow_tracking.py   # inicialização de experimentos
 ```
 
-**Regra de isolamento:** nenhum módulo dentro de `observability/` importa de `src/revisao_agents`.
+**Regra de isolamento:** nenhum módulo dentro de `observability/` importa de outros módulos de `revisao_agents` além de si mesmo.
 Toda leitura de variáveis de ambiente é feita via `os.getenv` em `mlflow_config.py`.
 
 ---
@@ -90,7 +90,7 @@ Para rastrear métricas em um novo workflow:
 
 ```python
 import mlflow
-from observability.mlflow_config import EXP_WRITING_ACADEMIC  # use a constante
+from revisao_agents.observability.mlflow_config import EXP_WRITING_ACADEMIC  # use a constante
 
 mlflow.set_experiment(EXP_WRITING_ACADEMIC)
 with mlflow.start_run(run_name="nome-do-run"):
@@ -99,7 +99,7 @@ with mlflow.start_run(run_name="nome-do-run"):
     mlflow.log_metric("secoes_geradas", num_sections)
 ```
 
-Use sempre as constantes de `observability.mlflow_config` (ex.: `EXP_PLANNING_ACADEMIC`) em vez de strings literais.
+Use sempre as constantes de `revisao_agents.observability.mlflow_config` (ex.: `EXP_PLANNING_ACADEMIC`) em vez de strings literais.
 
 ---
 

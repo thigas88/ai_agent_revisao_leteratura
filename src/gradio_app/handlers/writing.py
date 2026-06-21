@@ -7,11 +7,10 @@ import threading
 from collections.abc import Generator
 from typing import Any
 
-from observability import workflow_run
-from observability.mlflow_config import EXP_WRITING_ACADEMIC, EXP_WRITING_TECHNICAL
-
 from revisao_agents.config import PLANS_DIR, validate_runtime_config
 from revisao_agents.core.schemas.writer_config import WriterConfig
+from revisao_agents.observability import workflow_run
+from revisao_agents.observability.mlflow_config import EXP_WRITING_ACADEMIC, EXP_WRITING_TECHNICAL
 from revisao_agents.state import TechnicalWriterState
 from revisao_agents.workflows.technical_writing_workflow import (
     build_technical_writing_workflow,
@@ -94,10 +93,11 @@ def start_writing(
         )
         return
 
+    normalized_language = WriterConfig.normalize_language(language)
     if mode == "Academic":
-        writer_config = WriterConfig.academic(language=language)
+        writer_config = WriterConfig.academic(language=normalized_language)
     else:
-        writer_config = WriterConfig.technical(language=language)
+        writer_config = WriterConfig.technical(language=normalized_language)
     writer_config.min_sources_per_section = max(0, int(min_src))
 
     state_init: TechnicalWriterState = {

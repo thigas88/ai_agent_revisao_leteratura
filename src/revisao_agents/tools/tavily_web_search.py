@@ -584,7 +584,7 @@ def search_tavily_incremental(
         # result_reuse_percent and credit_efficiency_aggregated are computed as
         # per-call approximations since session state is not available here.
         if mlflow.active_run():
-            from observability.search_metrics import SearchQualityMetrics
+            from revisao_agents.observability.search_metrics import SearchQualityMetrics
 
             credits = ans.get("usage", {}).get("credits", 0.0)
             reused = [u for u in urls_found if u in previous_urls]
@@ -637,6 +637,31 @@ def search_tavily_incremental(
             "results": [],
             "usage": {},
         }
+
+
+@tool
+def search_tavily_incremental_tool(
+    query: str,
+    previous_urls: list[str],
+    max_results: int = TAVILY_CONFIG.num_results,
+) -> dict:
+    """Incremental academic search that accumulates URLs without duplicates.
+
+    Agent-bindable wrapper around `search_tavily_incremental` — the underlying
+    function is also called directly elsewhere in this codebase as a plain
+    utility, so it intentionally has no `@tool` decorator of its own.
+
+    Args:
+        query: The search query string.
+        previous_urls: URLs already retrieved in previous calls; used to compute
+            the ``new_urls`` set and avoid downstream duplicates.
+        max_results: Maximum number of results to request from Tavily. Defaults
+            to ``TAVILY_CONFIG.num_results``.
+
+    Returns:
+        dict: Same shape as `search_tavily_incremental`.
+    """
+    return search_tavily_incremental(query, previous_urls, max_results)
 
 
 # ============================================================================
