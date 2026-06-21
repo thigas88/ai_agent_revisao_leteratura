@@ -15,7 +15,7 @@ Usage
 
 Requirements
 ------------
-- ``MLFLOW_TRACKING_URI`` (optional): defaults to ``sqlite:///./mlruns/mlflow.db``
+- ``MLFLOW_TRACKING_URI`` (optional): defaults to ``sqlite:///./runtime/mlruns/mlflow.db``
 - ``TAVILY_SEARCH_DEPTH`` / ``TAVILY_NUM_RESULTS`` (optional): read from env or
   their own defaults so the script works without a full ``.env`` file.
 
@@ -36,7 +36,8 @@ if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
 import mlflow  # noqa: E402
-from observability.mlflow_config import (  # noqa: E402
+
+from revisao_agents.observability.mlflow_config import (  # noqa: E402
     EXPERIMENTS,
     get_tracking_uri,
 )

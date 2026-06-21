@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-A aba **📄 View** (também chamada de **Visualizador**) permite navegar e visualizar qualquer arquivo `.md` gerado pelo sistema — planos da pasta `plans/` ou revisões da pasta `reviews/` — renderizado em Markdown formatado.
+A aba **📄 View** (também chamada de **Visualizador**) permite navegar e visualizar qualquer arquivo `.md` gerado pelo sistema — planos da pasta `runtime/plans/` ou revisões da pasta `runtime/reviews/` — renderizado em Markdown formatado.
 
 Use esta aba para ler o resultado de um plano ou revisão sem precisar abrir um editor de texto.
 
@@ -12,7 +12,7 @@ Use esta aba para ler o resultado de um plano ou revisão sem precisar abrir um 
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| **Pasta** | Seleção (Radio) | `📋 Plans` — exibe arquivos da pasta `plans/` · `📝 Reviews` — exibe arquivos da pasta `reviews/` |
+| **Pasta** | Seleção (Radio) | `📋 Plans` — exibe arquivos da pasta `runtime/plans/` · `📝 Reviews` — exibe arquivos da pasta `runtime/reviews/` |
 | **Arquivo** | Dropdown | Lista os arquivos `.md` disponíveis na pasta selecionada |
 | **Botão Atualizar lista** | Botão (pequeno) | Recarrega a lista de arquivos (útil após gerar um novo plano/revisão) |
 | **Botão View** | Botão | Carrega e renderiza o arquivo selecionado |

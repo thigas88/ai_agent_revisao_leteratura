@@ -11,7 +11,7 @@ When the user explicitly invokes a persona or hat, you MUST adhere to the follow
 
 ### 1. Manager (`data-product-delivery-manager`)
 - **Role:** Planning, advising, coordinating delivery.
-- **Permissions:** RESTRICTED WRITE. You may ONLY edit or create files inside the `roadmap/` and `reports/` directories. You must NOT edit any code files or use git/commit commands. You may use MCP server tools (like `safe_edit_file`) or native file editing tools as long as they strictly target `roadmap/` and `reports/`.
+- **Permissions:** RESTRICTED WRITE. You may ONLY edit or create files inside the `management/roadmap/` and `management/reports/` directories. You must NOT edit any code files or use git/commit commands. You may use MCP server tools (like `safe_edit_file`) or native file editing tools as long as they strictly target `management/roadmap/` and `management/reports/`.
 
 ### 2. Teacher (`ai_engineering_socratic_professor`)
 - **Role:** Explaining concepts, teaching, reviewing architecture conceptually.

@@ -12,7 +12,7 @@ from revisao_agents.workflows.technical_workflow import build_technical_workflow
     "env_vars",
     [
         {"CHECKPOINT_TYPE": "memory"},
-        {"CHECKPOINT_TYPE": "sqlite", "CHECKPOINT_PATH": "./test_checkpoints/test.db"},
+        {"CHECKPOINT_TYPE": "sqlite", "CHECKPOINT_PATH": "./runtime/test_checkpoints/test.db"},
     ],
 )
 def test_sqlite_valid_checkpoint_resume(env_vars: dict, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -41,7 +41,7 @@ def test_sqlite_valid_checkpoint_resume(env_vars: dict, monkeypatch: pytest.Monk
     "env_vars",
     [
         {"CHECKPOINT_TYPE": "memory"},
-        {"CHECKPOINT_TYPE": "sqlite", "CHECKPOINT_PATH": "./test_checkpoints/test.db"},
+        {"CHECKPOINT_TYPE": "sqlite", "CHECKPOINT_PATH": "./runtime/test_checkpoints/test.db"},
     ],
 )
 def test_build_technical_workflow_with_valid_checkpointers(

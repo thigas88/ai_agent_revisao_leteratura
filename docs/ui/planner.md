@@ -8,7 +8,7 @@ Dois tipos de revisão são suportados:
 - **Acadêmica** — revisão narrativa de literatura (artigos, teses, periódicos)
 - **Técnica** — capítulo técnico didático com base em fontes da web e corpus local
 
-O plano gerado é salvo automaticamente na pasta `plans/` e pode ser usado como entrada na aba **✍️ Write**.
+O plano gerado é salvo automaticamente na pasta `runtime/plans/` e pode ser usado como entrada na aba **✍️ Write**.
 
 ---
 
@@ -63,7 +63,7 @@ Após a resposta do usuário, a avaliação é refeita com o tema atualizado. O 
 8. Clique em **"💬 Reply"** para enviar sua resposta.
 9. Repita até o agente indicar que o plano está finalizado.
 10. O **plano renderizado** aparece abaixo do chat assim que a sessão termina.
-11. O arquivo é salvo automaticamente em `plans/plano_revisao_<tema>_<data>.md`.
+11. O arquivo é salvo automaticamente em `runtime/plans/plano_revisao_<tema>_<data>.md`.
 
 > **Dica:** Se não souber responder a uma pergunta do agente, escreva "Não tenho preferência" ou "Pode decidir" — o agente continuará com escolhas padrão razoáveis.
 
@@ -114,8 +114,8 @@ AuthenticationError: Invalid API key
 - Pode ser um timeout de rede ou limite de tokens. Tente com um tema mais curto.
 - Reduza o número de rodadas de refinamento para 1 ou 2.
 
-### O plano não é salvo em `plans/`
-- A pasta `plans/` é criada automaticamente. Se não existir, rode `mkdir plans` no diretório do projeto e tente novamente.
+### O plano não é salvo em `runtime/plans/`
+- A pasta `runtime/plans/` é criada automaticamente. Se não existir, rode `mkdir -p runtime/plans` no diretório do projeto e tente novamente.
 
 ### Sessão expirada após inatividade
 - Clique em "🚀 Start Planning" novamente para reiniciar uma nova sessão.

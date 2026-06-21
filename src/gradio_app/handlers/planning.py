@@ -13,11 +13,11 @@ from contextlib import nullcontext
 from datetime import datetime
 
 import mlflow
-from observability import workflow_run
-from observability.mlflow_config import EXP_PLANNING_ACADEMIC, EXP_PLANNING_TECHNICAL
 
 from revisao_agents.config import validate_runtime_config
 from revisao_agents.graphs.checkpoints import get_checkpointer
+from revisao_agents.observability import workflow_run
+from revisao_agents.observability.mlflow_config import EXP_PLANNING_ACADEMIC, EXP_PLANNING_TECHNICAL
 from revisao_agents.state import ReviewState
 from revisao_agents.workflows import build_academic_workflow, build_technical_workflow
 

@@ -1,5 +1,6 @@
 import pytest
-from observability.search_metrics import SearchQualityMetrics
+
+from revisao_agents.observability.search_metrics import SearchQualityMetrics
 
 
 class TestSearchCoverage:

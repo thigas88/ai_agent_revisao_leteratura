@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "safe-edit": {
+      "command": ".venv/bin/python",
+      "args": ["mcp-servers/safe_edit_mcp.py"]
+    },
+    "playwright": {
+      "command": "playwright-mcp",
+      "args": ["--headless"]
+    }
+  }
+}

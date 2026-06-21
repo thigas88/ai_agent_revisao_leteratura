@@ -4,14 +4,14 @@ from fastmcp import FastMCP
 
 mcp = FastMCP("Safe Edit MCP - Delivery Manager")
 
-ALLOWED_WRITE_DIRS = ["roadmap", "reports"]
+ALLOWED_WRITE_DIRS = ["management/roadmap", "management/reports"]
 
 
 @mcp.tool
 def safe_edit_file(file_path: str, content: str) -> str:
     """
     Edits a file safely.
-    Only allows writing to 'roadmap/' and 'reports/' directories.
+    Only allows writing to 'management/roadmap/' and 'management/reports/' directories.
     Any other directory is immediately blocked.
 
     Args:
@@ -31,7 +31,7 @@ def safe_edit_file(file_path: str, content: str) -> str:
         )
 
         if not is_allowed:
-            return f"🚫 SECURITY ERROR (Delivery Manager): This agent can only edit files within 'roadmap/' or 'reports/'. Attempt blocked: {file_path}"
+            return f"🚫 SECURITY ERROR (Delivery Manager): This agent can only edit files within 'management/roadmap/' or 'management/reports/'. Attempt blocked: {file_path}"
 
         # Create directories if necessary and write the file
         path.parent.mkdir(parents=True, exist_ok=True)

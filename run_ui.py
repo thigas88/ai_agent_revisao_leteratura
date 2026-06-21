@@ -37,7 +37,7 @@ if _ROOT not in sys.path:
 from gradio_app.app import main  # noqa: E402
 
 try:
-    from observability import initialize_experiments  # noqa: E402
+    from revisao_agents.observability import initialize_experiments  # noqa: E402
 
     initialize_experiments()
 except Exception as exc:  # noqa: BLE001

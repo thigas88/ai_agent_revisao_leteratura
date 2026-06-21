@@ -15,12 +15,16 @@ from __future__ import annotations
 import mlflow
 import pytest
 from dotenv import load_dotenv
-from observability import workflow_run
-from observability.mlflow_config import EXP_PLANNING_TECHNICAL, EXP_REVIEW_CHAT, get_tracking_uri
 
 from revisao_agents.nodes.technical import (
     initial_technical_search_node,
     refine_technical_search_node,
+)
+from revisao_agents.observability import workflow_run
+from revisao_agents.observability.mlflow_config import (
+    EXP_PLANNING_TECHNICAL,
+    EXP_REVIEW_CHAT,
+    get_tracking_uri,
 )
 from revisao_agents.state import ReviewState
 from revisao_agents.tools.tavily_web_search import search_tavily_incremental

@@ -99,7 +99,7 @@ Com o backend em memória, **as sessões não podem ser retomadas** após reinic
 
 ```env
 CHECKPOINT_TYPE=sqlite
-CHECKPOINT_PATH=checkpoints/checkpoints.db
+CHECKPOINT_PATH=runtime/checkpoints/checkpoints.db
 ```
 
 | Propriedade | Valor |
@@ -126,7 +126,7 @@ CHECKPOINT_TYPE=memory
 
 # SQLite (recomendado para produção)
 CHECKPOINT_TYPE=sqlite
-CHECKPOINT_PATH=checkpoints/checkpoints.db
+CHECKPOINT_PATH=runtime/checkpoints/checkpoints.db
 ```
 
 ### Verificando o backend
@@ -187,7 +187,7 @@ O agente detectará o checkpoint existente e continuará a partir da última pau
 As sessões se acumulam no arquivo SQLite ao longo do tempo. Para limpar todas as sessões:
 
 ```bash
-rm checkpoints/checkpoints.db
+rm runtime/checkpoints/checkpoints.db
 ```
 
 > ⚠️ Essa operação é irreversível. Todo o histórico de sessões será perdido.
@@ -197,7 +197,7 @@ rm checkpoints/checkpoints.db
 Para isolar sessões por projeto, defina um caminho diferente:
 
 ```env
-CHECKPOINT_PATH=checkpoints/projeto_abc.db
+CHECKPOINT_PATH=runtime/checkpoints/projeto_abc.db
 ```
 
 ---

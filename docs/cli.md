@@ -35,7 +35,7 @@ uv run revisao-agents
 ### Opções do Menu:
 1. **Plan Academic Review**: Inicia workflow de planejamento para revisões narrativas/acadêmicas.
 2. **Plan Technical Review**: Inicia workflow para capítulos técnicos ou revisões de ferramentas.
-3. **Execute Writing**: Permite escolher um plano gerado anteriormente (na pasta `plans/`) e iniciar a escrita automática das seções.
+3. **Execute Writing**: Permite escolher um plano gerado anteriormente (na pasta `runtime/plans/`) e iniciar a escrita automática das seções.
 4. **Index Local PDFs**: Processa uma pasta de arquivos PDF, extrai texto e salva no banco vetorial MongoDB.
 5. **Format References**: Lê um arquivo YAML/JSON e gera referências formatadas em ABNT/APA/IEEE via LLM.
 
@@ -89,7 +89,7 @@ O sistema agora suporta persistência de estado via SQLite. Isso permite que voc
 
 Configuração no `.env`:
 - `CHECKPOINT_TYPE=sqlite` (ativa o banco de dados)
-- `CHECKPOINT_PATH=checkpoints/checkpoints.db` (local do arquivo)
+- `CHECKPOINT_PATH=runtime/checkpoints/checkpoints.db` (local do arquivo)
 
 Se `CHECKPOINT_TYPE=memory` (padrão), o estado é perdido após fechar o terminal.
 
@@ -127,7 +127,7 @@ uv run python -m revisao_agents
 # Escolha [4], informe a pasta
 
 # 2. Planeje a revisão
-uv run revisao-agents "Seu tema aqui" --review-type academic --output plans/meu_plano.md
+uv run revisao-agents "Seu tema aqui" --review-type academic --output runtime/plans/meu_plano.md
 
 # 3. Escreva o documento
 uv run python -m revisao_agents
@@ -138,7 +138,7 @@ uv run python -m revisao_agents
 
 ```bash
 # 1. Planeje
-uv run revisao-agents "Tema técnico" --review-type technical --output plans/plano_tecnico.md
+uv run revisao-agents "Tema técnico" --review-type technical --output runtime/plans/plano_tecnico.md
 
 # 2. Escreva com Tavily ativado
 uv run python -m revisao_agents
@@ -153,7 +153,7 @@ uv run revisao-agents "Tema" \
   --review-type academic \
   --rounds 2 \
   --auto-response "Aceitar plano atual." \
-  --output plans/automatico.md
+  --output runtime/plans/automatico.md
 ```
 
 ---

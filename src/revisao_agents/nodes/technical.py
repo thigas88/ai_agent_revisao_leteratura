@@ -11,7 +11,8 @@ Prompts are loaded from YAML files in prompts/technical/.
 """
 
 import mlflow
-from observability.search_metrics import SearchQualityMetrics
+
+from revisao_agents.observability.search_metrics import SearchQualityMetrics
 
 from ..config import PLANS_DIR
 from ..state import ReviewState

@@ -16,7 +16,7 @@ O agente pode:
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| **Arquivo de revisão** | Dropdown | Seleciona o arquivo `.md` da pasta `reviews/` para revisar |
+| **Arquivo de revisão** | Dropdown | Seleciona o arquivo `.md` da pasta `runtime/reviews/` para revisar |
 | **Botão Atualizar** | Botão (pequeno) | Recarrega a lista de arquivos |
 | **Botão Iniciar sessão** | Botão | Carrega o arquivo e inicia a sessão de revisão |
 | **Busca web** | Checkbox | Ativa o Tavily para o agente buscar fontes online durante a revisão |
@@ -32,7 +32,7 @@ O agente pode:
 
 ## Fluxo passo a passo
 
-1. No dropdown **Arquivo de revisão**, selecione o `.md` que deseja revisar (da pasta `reviews/`).
+1. No dropdown **Arquivo de revisão**, selecione o `.md` que deseja revisar (da pasta `runtime/reviews/`).
    - Se não encontrar o arquivo, clique em **"🔄 Refresh files"**.
 2. Opcionalmente ative **"🌐 Allow web search"** se quiser que o agente busque novas referências online.
 3. Clique em **"▶ Start session"**.

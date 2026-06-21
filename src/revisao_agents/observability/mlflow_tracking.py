@@ -88,8 +88,8 @@ def workflow_run(
 
     Example::
 
-        from observability.mlflow_config import EXP_PLANNING_ACADEMIC
-        from observability.mlflow_tracking import workflow_run
+        from revisao_agents.observability.mlflow_config import EXP_PLANNING_ACADEMIC
+        from revisao_agents.observability.mlflow_tracking import workflow_run
 
         with workflow_run(EXP_PLANNING_ACADEMIC, "academic/my-theme", params={"rounds": 3}):
             result = run_graph(...)
